@@ -26,3 +26,11 @@ From the project's root directory you can execute the following commands:
     text:touched with the essence of the thing against which we strive.â?? And Bill
     text2://*touched
   
+# Build  
+  
+From project's root directory, execute the following command:
+  
+    mvn clean package    
+    
+target directory contains grep.jar   
+  
