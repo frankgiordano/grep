@@ -34,3 +34,8 @@ From project's root directory, execute the following command:
     
 target directory contains grep.jar   
   
+## Requirements  
+  
+    Java 11 and above   
+    Maven       
+  
