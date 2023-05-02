@@ -8,7 +8,7 @@ This program follows GNU grep logic flow. It reads raw data into a large buffer,
   
     java -jar grep.jar <agr1> <arg2>  
   
-    arg1 is file name
+    arg1 is file or directory name
     arg2 is search pattern   
     
 Examples:   
