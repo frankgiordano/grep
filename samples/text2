@@ -1,0 +1,47 @@
+//SANDJFRS JOB (105200000),'SCM SCL',
+//         REGION=6M,
+//         CLASS=B,MSGCLASS=X,NOTIFY=&SYSUID
+/*JOBPARM SYSAFF=(XAD1)
+// JCLLIB ORDER=(CA90SMVS.MOTM.$PDTJCL,CAIPRODD.NDVR.PROD.CSIQJCL)
+//*JCLLIB ORDER=(MFWSCC.MOTM.$PDTJCL,CAIPRODD.NDVR.PROD.CSIQJCL)
+//*********************************************************************
+//*  ENDEVOR JCL STATEMENTS                                           *
+//*********************************************************************
+//SCMSTEP  EXEC SCMMPROC,PROG='C1BM3000'
+//*
+//CAIOBJ   DD   DISP=SHR,DSN=CA90SMVS.FG892105.JFRS.OBJ
+//CAIHFS   DD   DISP=SHR,DSN=CA90SMVS.FG892105.JFRS.HFS
+//*********************************************************************
+//*  REQUEST DATA SET                                                 *
+//*********************************************************************
+//BSTIPT01 DD   *
+*                                                                       00010000
+*    LOADONLY/LOADLIB                                                   00020000
+*                                                                       00030000
+  SET FROM DDNAME CAIOBJ                                                00040000
+ .                                                                      00050000
+  SET TO   ENVIRONMENT 'DEV' SYSTEM 'CCS150' SUBSYSTEM 'FF619009'       00060008
+       TYPE 'OBJNOS'                                                    00070000
+ .                                                                      00080000
+  SET OPTIONS CCID 'FF619009'                                           00090006
+       COMMENTS 'Java Feature Reg Service'                              00100000
+       UPDATE IF PRESENT                                                00110000
+       OVERRIDE SIGNOUT                                                 00120000
+ .                                                                      00130000
+  ADD ELEMENT 'CAS9RJM4'                                                00150000
+      FROM DDNAME CAIOBJ                                                00160003
+ .                                                                      00170003
+  SET FROM DDNAME CAIHFS                                                00040000
+ .                                                                      00050000
+  SET TO   ENVIRONMENT 'DEV' SYSTEM 'CCS150' SUBSYSTEM 'FF619009'       00060008
+       TYPE 'HFS'                                                       00070000
+ .                                                                      00080000
+  SET OPTIONS CCID 'FF619009'                                           00090006
+       COMMENTS 'Java Feature Reg Service'                              00100000
+       UPDATE IF PRESENT                                                00110000
+       OVERRIDE SIGNOUT                                                 00120000
+ .                                                                      00130000
+  ADD ELEMENT 'CAS9RJAR'                                                00150000
+      FROM DDNAME CAIHFS                                                00160003
+ .                                                                      00170003
+//
