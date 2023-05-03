@@ -108,7 +108,10 @@ public class Grep {
             }
             return;
         }
-        search(getFileContent(file)).forEach(System.out::println);
+        
+        if (file.exists()) {
+            search(getFileContent(file)).forEach(System.out::println);
+        }
     }
 
 }
