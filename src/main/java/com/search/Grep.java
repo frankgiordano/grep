@@ -93,24 +93,22 @@ public class Grep {
         }
 
         final File file = new File(fileLocation);
-        List<String> files = new ArrayList<>();
+
         if (file.isDirectory()) {
+            List<String> files;
             files = Stream.of(file.listFiles())
                     .filter(item -> !item.isDirectory())
                     .map(File::getName)
                     .collect(Collectors.toList());
-        }
 
-        if (files.isEmpty()) {
-            search(getFileContent(file)).forEach(System.out::println);
+            files.sort(Comparator.naturalOrder());
+            for (String name : files) {
+                search(getFileContent(new File(name)))
+                        .forEach(item -> System.out.println(name + ":" + item));
+            }
             return;
         }
-
-        files.sort(Comparator.naturalOrder());
-        for (String name : files) {
-            search(getFileContent(new File(name)))
-                    .forEach(item -> System.out.println(name + ":" + item));
-        }
+        search(getFileContent(file)).forEach(System.out::println);
     }
 
 }
