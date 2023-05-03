@@ -26,8 +26,8 @@ public class Grep {
     private static BmSearch search;
 
     private static String getFileContent(File file) throws IOException {
-        final StringBuilder content = new StringBuilder();
-        try (final BufferedReader br = new BufferedReader(new FileReader(file))) {
+        final var content = new StringBuilder();
+        try (final var br = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = br.readLine()) != null) {
                 content.append(line).append("\n");
@@ -37,12 +37,10 @@ public class Grep {
     }
 
     private static List<String> search(String content) {
-        final List<String> results = new ArrayList<>();
+        final var results = new ArrayList<String>();
         int index = search.findPosition(content);
         while (index != 0) {
-            final String foundStr = content.substring(index);
-
-            final StringBuilder entireLine = new StringBuilder();
+            final var entireLine = new StringBuilder();
             for (int i = index - 1; i >= 0; i--) {
                 if (content.charAt(i) == '\n') {
                     break;
@@ -50,6 +48,8 @@ public class Grep {
                 entireLine.append(content.charAt(i));
             }
             entireLine.reverse();
+
+            final var foundStr = content.substring(index);
             for (int i = 0; i < foundStr.length(); i++) {
                 if (foundStr.charAt(i) == '\n') {
                     break;
@@ -60,6 +60,7 @@ public class Grep {
             if (entireLine.length() > 0) {
                 results.add(entireLine.toString());
             }
+
             int newIndex = index + pattern.length();
             if (newIndex > content.length()) {
                 break;
@@ -92,8 +93,7 @@ public class Grep {
             return;
         }
 
-        final File file = new File(fileLocation);
-
+        final var file = new File(fileLocation);
         if (file.isDirectory()) {
             List<String> files;
             files = Stream.of(file.listFiles())

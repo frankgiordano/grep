@@ -27,15 +27,15 @@ public class BmSearch {
     }
 
     private void compileMisMatchShiftsTable() {
-        final int lengthOfPattern = pattern.length();
+        final var lengthOfPattern = pattern.length();
         for (int i = 0; i < lengthOfPattern; i++) {
             misMatchShiftsTable.put(pattern.charAt(i), Math.max(1, lengthOfPattern - i - 1));
         }
     }
 
     public int findPosition(String text) {
-        final int lengthOfPattern = pattern.length();
-        final int lengthOfText = text.length();
+        final var lengthOfPattern = pattern.length();
+        final var lengthOfText = text.length();
         int numOfSkips;
 
         for (int i = 0; i <= lengthOfText - lengthOfPattern; i += numOfSkips) {
