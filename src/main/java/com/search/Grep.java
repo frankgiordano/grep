@@ -103,7 +103,7 @@ public class Grep {
                     .collect(Collectors.toList());
 
             files.sort(Comparator.naturalOrder());
-            for (String name : files) {
+            for (final var name : files) {
                 search(getFileContent(new File(name)))
                         .forEach(item -> System.out.println(name + ":" + item));
             }
