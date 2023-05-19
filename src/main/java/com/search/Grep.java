@@ -38,10 +38,10 @@ public class Grep {
 
     private static List<String> search(String content) {
         final var results = new ArrayList<String>();
-        int index = search.findPosition(content);
+        var index = search.findPosition(content);
         while (index != 0) {
             final var entireLine = new StringBuilder();
-            for (int i = index - 1; i >= 0; i--) {
+            for (var i = index - 1; i >= 0; i--) {
                 if (content.charAt(i) == '\n') {
                     break;
                 }
@@ -50,7 +50,7 @@ public class Grep {
             entireLine.reverse();
 
             final var foundStr = content.substring(index);
-            for (int i = 0; i < foundStr.length(); i++) {
+            for (var i = 0; i < foundStr.length(); i++) {
                 if (foundStr.charAt(i) == '\n') {
                     break;
                 }
@@ -61,7 +61,7 @@ public class Grep {
                 results.add(entireLine.toString());
             }
 
-            int newIndex = index + pattern.length();
+            var newIndex = index + pattern.length();
             if (newIndex > content.length()) {
                 break;
             }
