@@ -38,9 +38,9 @@ public class BmSearch {
         final var lengthOfText = text.length();
         int numOfSkips;
 
-        for (int i = 0; i <= lengthOfText - lengthOfPattern; i += numOfSkips) {
+        for (var i = 0; i <= lengthOfText - lengthOfPattern; i += numOfSkips) {
             numOfSkips = 0;
-            for (int j = lengthOfPattern - 1; j >= 0; j--) {  // check starting from right to left
+            for (var j = lengthOfPattern - 1; j >= 0; j--) {  // check starting from right to left
                 if (pattern.charAt(j) != text.charAt(i + j)) {
                     if (misMatchShiftsTable.get(text.charAt(i + j)) != null) {
                         numOfSkips = misMatchShiftsTable.get(text.charAt(i + j));
