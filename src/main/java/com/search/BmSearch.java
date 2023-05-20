@@ -28,7 +28,7 @@ public class BmSearch {
 
     private void compileMisMatchShiftsTable() {
         final var lengthOfPattern = pattern.length();
-        for (int i = 0; i < lengthOfPattern; i++) {
+        for (var i = 0; i < lengthOfPattern; i++) {
             misMatchShiftsTable.put(pattern.charAt(i), Math.max(1, lengthOfPattern - i - 1));
         }
     }
