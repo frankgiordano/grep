@@ -94,10 +94,8 @@ public class Grep {
         }
 
         final var file = new File(fileLocation);
-
         if (file.isDirectory()) {
-            List<String> files;
-            files = Stream.of(file.listFiles())
+            final var files = Stream.of(file.listFiles())
                     .filter(item -> !item.isDirectory())
                     .map(File::getName)
                     .collect(Collectors.toList());
