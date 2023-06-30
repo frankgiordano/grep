@@ -98,9 +98,9 @@ public class Grep {
             final var files = Stream.of(file.listFiles())
                     .filter(item -> !item.isDirectory())
                     .map(File::getName)
+                    .sorted(Comparator.naturalOrder())
                     .collect(Collectors.toList());
 
-            files.sort(Comparator.naturalOrder());
             for (final var name : files) {
                 search(getFileContent(new File(name)))
                         .forEach(item -> System.out.println(name + ":" + item));
