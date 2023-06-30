@@ -61,7 +61,7 @@ public class Grep {
                 results.add(entireLine.toString());
             }
 
-            var newIndex = index + pattern.length();
+            final var newIndex = index + pattern.length();
             if (newIndex > content.length()) {
                 break;
             }
