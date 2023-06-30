@@ -102,7 +102,7 @@ public class Grep {
                     .collect(Collectors.toList());
 
             for (final var name : files) {
-                search(getFileContent(new File(name)))
+                search(getFileContent(new File(fileLocation + "\\" + name)))
                         .forEach(item -> System.out.println(name + ":" + item));
             }
             return;
