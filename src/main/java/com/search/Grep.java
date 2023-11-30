@@ -68,6 +68,12 @@ public class Grep {
             content = content.substring(index + pattern.length());
             index = search.findPosition(content);
         }
+
+        // handle edge case if found on first line only
+        if (index == 0 && !content.isBlank()) {
+            results.add(content);
+        }
+
         return results;
     }
 
