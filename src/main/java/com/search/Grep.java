@@ -4,9 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,58 +22,37 @@ public class Grep {
 
     private static String fileLocation;
     private static String pattern;
-    private static BmSearch search;
+    private static String fileName;
 
-    private static String getFileContent(File file) throws IOException {
-        final var content = new StringBuilder();
-        try (final var br = new BufferedReader(new FileReader(file))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                content.append(line).append("\n");
-            }
-        }
-        return content.toString();
-    }
-
-    private static List<String> search(String content) {
-        final var results = new ArrayList<String>();
-        var index = search.findPosition(content);
-        while (index != 0) {
-            final var entireLine = new StringBuilder();
-            for (var i = index - 1; i >= 0; i--) {
-                if (content.charAt(i) == '\n') {
-                    break;
-                }
-                entireLine.append(content.charAt(i));
-            }
-            entireLine.reverse();
-
-            final var foundStr = content.substring(index);
-            for (var i = 0; i < foundStr.length(); i++) {
-                if (foundStr.charAt(i) == '\n') {
-                    break;
-                }
-                entireLine.append(foundStr.charAt(i));
-            }
-
-            if (entireLine.length() > 0) {
-                results.add(entireLine.toString());
-            }
-
-            final var newIndex = index + pattern.length();
-            if (newIndex > content.length()) {
-                break;
-            }
-            content = content.substring(index + pattern.length());
-            index = search.findPosition(content);
+    public static void main(String[] args) throws IOException {
+        try {
+            setup(args);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return;
         }
 
-        // handle edge case if found on first line only
-        if (index == 0 && !content.isBlank()) {
-            results.add(content);
+        final var file = new File(fileLocation);
+        if (file.isDirectory()) {
+            final var files = Stream.of(Objects.requireNonNull(file.listFiles()))
+                    .filter(item -> !item.isDirectory())
+                    .map(File::getName)
+                    .sorted(Comparator.naturalOrder())
+                    .collect(Collectors.toList());
+
+            for (final var name : files) {
+                String content = getFileContent(new File(fileLocation + "/" + name));
+                fileName = name;
+                search(content);
+            }
+            return;
         }
 
-        return results;
+        if (file.exists()) {
+            String content = getFileContent(file);
+            fileName = file.getName();
+            search(content);
+        }
     }
 
     private static void setup(String[] args) {
@@ -88,35 +66,32 @@ public class Grep {
         } catch (Exception e) {
             throw new IllegalArgumentException("missing second search pattern argument, try again...");
         }
-        search = new BmSearch(pattern);
     }
 
-    public static void main(String[] args) throws IOException {
-        try {
-            setup(args);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return;
-        }
-
-        final var file = new File(fileLocation);
-        if (file.isDirectory()) {
-            final var files = Stream.of(file.listFiles())
-                    .filter(item -> !item.isDirectory())
-                    .map(File::getName)
-                    .sorted(Comparator.naturalOrder())
-                    .collect(Collectors.toList());
-
-            for (final var name : files) {
-                search(getFileContent(new File(fileLocation + "\\" + name)))
-                        .forEach(item -> System.out.println(name + ":" + item));
+    private static String getFileContent(File file) throws IOException {
+        var content = new StringBuilder();
+        try (var br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                content.append(line).append("\n");
             }
-            return;
+        }
+        return content.toString();
+    }
+
+    private static void search(final String content) {
+        int rc = BasicSearch.search(content, pattern);
+        if (rc > 0) {
+            System.out.println("\nBasic search for " + fileName + ":\n");
+            BasicSearch.lines.forEach(System.out::println);
         }
 
-        if (file.exists()) {
-            search(getFileContent(file)).forEach(System.out::println);
+        rc = AdvanceSearch.search(content, pattern);
+        if (rc > 0) {
+            System.out.println("\nAdvance search for " + fileName + ":\n");
+            AdvanceSearch.lines.forEach(System.out::println);
         }
+
     }
 
 }
